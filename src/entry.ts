@@ -1,6 +1,7 @@
 import downloadFile from './download-file';
+import { Options } from './components/sketch-download'
 
-window.saveCurrent = (title: string) => {
+window.saveCurrent = (title: string, options: Options) => {
   const page2layers = document.createElement('script');
   page2layers.src =
     'https://unpkg.com/story2sketch@1.5.0/lib/browser/page2layers.bundle.js';
@@ -19,7 +20,7 @@ window.saveCurrent = (title: string) => {
       })
     ];
 
-    downloadFile(`${title}.asketch.json`, page);
+    downloadFile(`${title}.asketch.json`, page, options);
   };
 
   document.head.appendChild(page2layers);

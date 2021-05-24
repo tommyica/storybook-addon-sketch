@@ -57,3 +57,12 @@ require('storybook-addon-sketch/register-options')({ kind: true });
 ```
 
 You will also need to have ran [story2sketch](https://github.com/chrisvxd/story2sketch) with the option `outputBy` set to `kind` and the `output` set to `out/sketch`. This will output all the sketch files to a specific folder that users can download from.
+
+### Transform Asketch JSON
+
+If you want to transform Asketch JSON files before downloading you can provide a function using the option `transformAsketch`:
+
+```js
+const transformAsketch = (json) => ({ ...json, layers: json.layers.reduce(…) });
+require('storybook-addon-sketch/register-options')({ transformAsketch });
+```

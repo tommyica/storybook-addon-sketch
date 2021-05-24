@@ -5,7 +5,7 @@ interface Page {
 }
 
 interface Window {
-  saveCurrent: (title: string) => void;
+  saveCurrent: (title: string, options: Options) => void;
 
   page2layers: {
     getPage: (options: {

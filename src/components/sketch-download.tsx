@@ -9,7 +9,7 @@ import {
 } from '@storybook/components';
 import downloadFile from '../download-file';
 
-const downloadKind = (api: any) => () => {
+const downloadKind = (api: any, options: Options) => () => {
   const withoutIndex = window.location.pathname
     .split('/')
     .slice(0, -1)
@@ -24,14 +24,14 @@ const downloadKind = (api: any) => () => {
 
   fetch(url)
     .then(data => data.json())
-    .then(json => downloadFile(file, json));
+    .then(json => downloadFile(file, json, options));
 };
 
-const downloadCurrent = (api: any) => () => {
+const downloadCurrent = (api: any, options: Options) => () => {
   const iframe = document.querySelector('iframe');
 
   if (iframe && iframe.contentWindow) {
-    iframe.contentWindow.saveCurrent(api.getCurrentStoryData().id);
+    iframe.contentWindow.saveCurrent(api.getCurrentStoryData().id, options);
   }
 };
 
@@ -44,6 +44,7 @@ const createBackgroundSelectorItem = (id: string, click: () => void) => ({
 
 export interface Options {
   kind: boolean;
+  transformAsketch?: <T extends Object>(aSketch: T) => Object;
 }
 
 interface SketchPluginProps {
@@ -78,17 +79,17 @@ export default class SketchPlugin extends React.Component<SketchPluginProps> {
     );
 
     if (!this.props.options.kind) {
-      return <Button onClick={downloadCurrent(this.props.api)} />;
+      return <Button onClick={downloadCurrent(this.props.api, this.props.options)} />;
     }
 
     const links = [
       createBackgroundSelectorItem(
         'Download Sketch files',
-        downloadKind(this.props.api)
+        downloadKind(this.props.api, this.props.options)
       ),
       createBackgroundSelectorItem(
         'Download Sketch Files for current story configuration',
-        downloadCurrent(this.props.api)
+        downloadCurrent(this.props.api, this.props.options)
       )
     ];
 
